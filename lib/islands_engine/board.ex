@@ -95,7 +95,8 @@ defmodule IslandsEngine.Board do
       ...> {_hit_or_miss, _island_forested, _win_or_no_win, board} = Board.guess(board, guess_coordinate)
       {:miss, :none, :no_win, board}
   """
-  @spec guess(%{}, Coordinate.t()) :: {:hit | :miss, Island.types() | :none, :win | :no_win, %{}}
+  @type island_type :: :square | :atoll | :dot | :l_shape | :s_shape
+  @spec guess(%{}, Coordinate.t()) :: {:hit | :miss, island_type | :none, :win | :no_win, %{}}
   def guess(board, %Coordinate{} = coordinate) do
     board
     |> check_all_islands(coordinate)

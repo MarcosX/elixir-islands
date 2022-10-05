@@ -10,7 +10,7 @@ defmodule IslandsEngine.Board do
   @doc """
   Position an `island` of `island_type` on the `board`
 
-  ## Example
+  ## Examples
       iex> {:ok, island_coordinate} = Coordinate.new(1, 1)
       ...> {:ok, island} = Island.new(:square, island_coordinate)
       ...> Board.position_island(Board.new(), :square, island)
@@ -30,6 +30,37 @@ defmodule IslandsEngine.Board do
       true -> {:error, :overlapping_island}
       false -> Map.put(board, island_type, island)
     end
+  end
+
+  @doc """
+  Check if all island types are on the board
+
+  ## Examples
+      iex> board = Board.new
+      ...> {:ok, island_coordinate} = Coordinate.new(1, 1)
+      ...> {:ok, island} = Island.new(:dot, island_coordinate)
+      ...> board = Board.position_island(board, :dot, island)
+      ...> {:ok, island_coordinate} = Coordinate.new(1, 2)
+      ...> {:ok, island} = Island.new(:square, island_coordinate)
+      ...> board = Board.position_island(board, :square, island)
+      ...> {:ok, island_coordinate} = Coordinate.new(2, 1)
+      ...> {:ok, island} = Island.new(:l_shape, island_coordinate)
+      ...> board = Board.position_island(board, :l_shape, island)
+      ...> {:ok, island_coordinate} = Coordinate.new(5, 1)
+      ...> {:ok, island} = Island.new(:atoll, island_coordinate)
+      ...> board = Board.position_island(board, :atoll, island)
+      ...> {:ok, island_coordinate} = Coordinate.new(5, 5)
+      ...> {:ok, island} = Island.new(:s_shape, island_coordinate)
+      ...> board = Board.position_island(board, :s_shape, island)
+      ...> Board.all_islands_positioned?(board)
+      true
+
+      iex> Board.all_islands_positioned?(Board.new)
+      false
+  """
+  @spec all_islands_positioned?(%{}) :: boolean
+  def all_islands_positioned?(board) do
+    Enum.all?(Island.types(), &Map.has_key?(board, &1))
   end
 
   defp overlaps_existing_island?(board, new_island_type, new_island) do

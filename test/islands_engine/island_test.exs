@@ -1,6 +1,6 @@
 defmodule IslandsEngine.IslandTest do
   use ExUnit.Case
-  alias IslandsEngine.{Island, Coordinate}
+  alias IslandsEngine.{Coordinate, Island}
   doctest Island
 
   test "invalid out of bounds island" do

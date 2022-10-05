@@ -1,4 +1,7 @@
 defmodule IslandsEngine.Board do
-  @spec new() :: %{}
-  def new(), do: %{}
+  @moduledoc """
+  Board tracks ilands and guesses for a player
+  """
+  @spec new :: %{}
+  def new, do: %{}
 end

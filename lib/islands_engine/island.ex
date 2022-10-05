@@ -1,8 +1,12 @@
 defmodule IslandsEngine.Island do
+  @moduledoc """
+  Island keeps track of island coordinates and which ones have been forested
+  """
   alias IslandsEngine.{Coordinate, Island}
 
   @enforce_keys [:coordinates, :hit_coordinates]
   defstruct [:coordinates, :hit_coordinates]
+  @type t :: %__MODULE__{}
 
   @doc """
   Creates a new island of `type` starting at the `upper_left` coordinate
@@ -18,7 +22,7 @@ defmodule IslandsEngine.Island do
         hit_coordinates: %MapSet{}}}
   """
   @type island_type :: :square | :atoll | :dot | :l_shape | :s_shape
-  @spec new(island_type, %Coordinate{}) :: %Island{}
+  @spec new(island_type, Coordinate.t()) :: Island.t()
   def new(type, %Coordinate{} = upper_left) do
     with [_ | _] = offsets <- offsets(type),
          %MapSet{} = coordinates <- add_coordinates(offsets, upper_left) do
@@ -42,7 +46,7 @@ defmodule IslandsEngine.Island do
       ...> Island.overlaps?(l_island, square_island)
       true
   """
-  @spec overlaps?(%Island{}, %Island{}) :: boolean
+  @spec overlaps?(Island.t(), Island.t()) :: boolean
   def overlaps?(existing_island, new_island) do
     not MapSet.disjoint?(existing_island.coordinates, new_island.coordinates)
   end
@@ -61,7 +65,7 @@ defmodule IslandsEngine.Island do
       ...> Island.guess(island, %Coordinate{row: 2, col: 2})
       :miss
   """
-  @spec guess(%Island{}, %Coordinate{}) :: :miss | {:hit, %Island{}}
+  @spec guess(Island.t(), Coordinate.t()) :: :miss | {:hit, Island.t()}
   def guess(island, coordinate) do
     case MapSet.member?(island.coordinates, coordinate) do
       true ->
@@ -86,7 +90,7 @@ defmodule IslandsEngine.Island do
       ...> Island.forested?(island)
       true
   """
-  @spec forested?(%Island{}) :: boolean
+  @spec forested?(Island.t()) :: boolean
   def forested?(island) do
     MapSet.equal?(island.coordinates, island.hit_coordinates)
   end
@@ -98,8 +102,8 @@ defmodule IslandsEngine.Island do
       iex> Island.types()
       [:atoll, :dot, :l_shape, :s_shape, :square]
   """
-  @spec types() :: [:atoll | :dot | :l_shape | :s_shape | :square]
-  def types(), do: [:atoll, :dot, :l_shape, :s_shape, :square]
+  @spec types :: [:atoll | :dot | :l_shape | :s_shape | :square]
+  def types, do: [:atoll, :dot, :l_shape, :s_shape, :square]
 
   defp offsets(:square), do: [{0, 0}, {0, 1}, {1, 0}, {1, 1}]
   defp offsets(:atoll), do: [{0, 0}, {0, 1}, {1, 1}, {2, 0}, {2, 1}]

@@ -14,7 +14,8 @@ defmodule IslandsEngine.MixProject do
         coveralls: :test,
         "coveralls.details": :test,
         "coveralls.post": :test,
-        "coveralls.html": :test
+        "coveralls.html": :test,
+        ensure_consistency: :test
       ]
     ]
   end

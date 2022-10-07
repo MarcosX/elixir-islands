@@ -33,7 +33,7 @@ defmodule IslandsEngine.Board do
   end
 
   @doc """
-  Check if all island types are on the board
+  Check if all island types are on the `board`
 
   ## Examples
       iex> board = Board.new()
@@ -55,7 +55,17 @@ defmodule IslandsEngine.Board do
       ...> Board.all_islands_positioned?(board)
       true
 
-      iex> Board.all_islands_positioned?(Board.new)
+      iex> board = Board.new()
+      ...> {:ok, island_coordinate} = Coordinate.new(1, 1)
+      ...> {:ok, island} = Island.new(:dot, island_coordinate)
+      ...> board = Board.position_island(board, :dot, island)
+      ...> {:ok, island_coordinate} = Coordinate.new(1, 2)
+      ...> {:ok, island} = Island.new(:square, island_coordinate)
+      ...> board = Board.position_island(board, :square, island)
+      ...> {:ok, island_coordinate} = Coordinate.new(2, 1)
+      ...> {:ok, island} = Island.new(:l_shape, island_coordinate)
+      ...> board = Board.position_island(board, :l_shape, island)
+      ...> Board.all_islands_positioned?(board)
       false
   """
   @spec all_islands_positioned?(%{}) :: boolean
